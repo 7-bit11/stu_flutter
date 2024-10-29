@@ -19,7 +19,7 @@ class _MovieContainerState extends State<MovieContainer> {
   @override
   void initState() {
     super.initState();
-    pageController = PageController(viewportFraction: .85);
+    pageController = PageController(viewportFraction: 1);
     pageController.addListener(() {
       setState(() => pageindex = pageController.page!);
     });
