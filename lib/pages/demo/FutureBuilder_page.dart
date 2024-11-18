@@ -25,7 +25,6 @@ class _FutureBuilderPageState extends State<FutureBuilderPage> {
   @override
   void initState() {
     super.initState();
-    //initData();
   }
 
   Future<String>? get1() async {

@@ -60,6 +60,13 @@ class FramePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final MyColors myColors = Theme.of(context).extension<MyColors>()!;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        var numList = [3, 2];
+        switch (numList) {
+          case [1 || 2, var c]:
+            print("2233$c");
+        }
+      }),
       appBar: AppBar(
         toolbarHeight: 0,
         elevation: 0,
@@ -81,8 +88,10 @@ class FramePage extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           children: [
-            TextField(
-              onChanged: (v) {},
+            IgnorePointer(
+              child: TextMarquee(
+                text: "单次观看直播时长为3分钟,后续需手动开启直播",
+              ),
             ),
             const SizedBox(height: 10),
             const Text("DEMO",
@@ -248,4 +257,78 @@ Widget getItem(String text, Widget goto) {
       ),
     ),
   );
+}
+
+class TextMarquee extends StatefulWidget {
+  final String text; // 单个文本
+  final Duration scrollDuration;
+
+  TextMarquee({
+    required this.text,
+    this.scrollDuration = const Duration(seconds: 1),
+  });
+
+  @override
+  _TextMarqueeState createState() => _TextMarqueeState();
+}
+
+class _TextMarqueeState extends State<TextMarquee> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _startScrolling();
+  }
+
+  void _startScrolling() async {
+    while (true) {
+      await Future.delayed(widget.scrollDuration);
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.offset + 100, // 每次向后滚动的距离
+          duration: widget.scrollDuration,
+          curve: Curves.linear,
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 100,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        controller: _scrollController,
+        reverse: false,
+        itemBuilder: (context, index) {
+          // 无限重复渲染文字和间隔
+          return Row(
+            children: [
+              // Center(
+              //   child: Text(
+              //     widget.text,
+              //     style: TextStyle(fontSize: 20),
+              //   ),
+              // ),
+              // SizedBox(width: 100), // 间隔宽度
+              Image.asset(
+                "assets/images/dao.jpg",
+                width: 200,
+                fit: BoxFit.cover,
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
 }

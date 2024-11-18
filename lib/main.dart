@@ -31,6 +31,13 @@ void demo() {
   logger.t({'key': 5, 'value': 'something'});
 
   Logger(printer: SimplePrinter(colors: true)).t('boom');
+
+  //initData();
+  var numList = [1, 2, 3];
+  // List pattern [a, b, c] destructures the three elements from numList...
+  var [a, b, c] = numList;
+  // ...and assigns them to new variables.
+  print(a + b + c);
 }
 
 void main() {
