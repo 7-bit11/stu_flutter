@@ -18,7 +18,17 @@ class _MagnifierPageState extends State<MagnifierPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: StudyAppBar.MyAppBar("DIY组件放大镜-Demo", context),
-      body: Magnifier(child: Image.asset("assets/images/girl.jpg")),
+      body: Center(
+        child: SizedBox(
+            width: 300,
+            height: 300,
+            child: Magnifier(
+                maxWidth: 300,
+                maxHeight: 300,
+                child: Image.asset(
+                  "assets/images/girl.jpg",
+                ))),
+      ),
     );
   }
 }
@@ -26,11 +36,14 @@ class _MagnifierPageState extends State<MagnifierPage> {
 class Magnifier extends StatefulWidget {
   final Widget child;
   final double magnification;
-
+  final double maxWidth;
+  final double maxHeight;
   const Magnifier({
     Key? key,
     required this.child,
     this.magnification = 2.0,
+    required this.maxWidth,
+    required this.maxHeight,
   }) : super(key: key);
 
   @override
@@ -52,13 +65,23 @@ class _MagnifierState extends State<Magnifier> {
               final childSize = constraints.biggest;
               return Listener(
                 onPointerMove: (event) {
+                  print("onPointerMove:${event.localPosition}");
+
                   setState(() {
-                    _offset = event.localPosition;
+                    final offsetData = event.localPosition;
+                    final dy = offsetData.dy > widget.maxHeight
+                        ? widget.maxHeight
+                        : offsetData.dy;
+                    final dx = offsetData.dx > widget.maxWidth
+                        ? widget.maxWidth
+                        : offsetData.dx;
+                    _offset = Offset(dx, dy);
                   });
                 },
                 child: MouseRegion(
                   onHover: (event) {
-                    setState(() => _offset = event.localPosition);
+                    // setState(() => _offset = event.localPosition);
+                    // print("onHover:${_offset}");
                   },
                   onExit: (_) => setState(() => _offset = null),
                   child: _offset != null
@@ -76,7 +99,7 @@ class _MagnifierState extends State<Magnifier> {
   Widget _buildBox(double dx, double dy, Size childSize) {
     final magnifierSize = childSize.shortestSide / 2;
     return Transform.translate(
-      offset: Offset(dx - magnifierSize / 2, dy - magnifierSize / 2),
+      offset: Offset(dx - magnifierSize / 1, dy - magnifierSize),
       child: Align(
         alignment: Alignment.topLeft,
         child: Stack(

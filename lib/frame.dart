@@ -33,11 +33,13 @@ import 'package:study_demo/pages/demo/drag_page.dart';
 import 'package:study_demo/pages/demo/draggableScrollableSheet_page.dart';
 import 'package:study_demo/pages/demo/dropdownMenu_page.dart';
 import 'package:study_demo/pages/demo/group_qr.dart';
+import 'package:study_demo/pages/demo/pad_custom_paint.dart';
 import 'package:study_demo/pages/demo/pendingView.dart';
 import 'package:study_demo/pages/demo/rect_my.dart';
 import 'package:study_demo/pages/demo/sliverMainAxisGroup_sliverPersistenHeader.dart';
 import 'package:study_demo/pages/demo/sliver_top_keep.dart';
 import 'package:study_demo/pages/demo/text_filed_type.dart';
+import 'package:study_demo/pages/demo/text_p.dart';
 import 'package:study_demo/pages/demo/transform_page.dart';
 import 'package:study_demo/pages/demo/waterWaveProgressBar.dart';
 import 'package:study_demo/pages/demo/watermark_page.dart';
@@ -144,7 +146,9 @@ class FramePage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
+          getItem("ce", CustomPainterPad()),
           getItem("选中所有文本", PendingPage()),
+          getItem("特殊字体", TextPainterNew()),
           getItem("TextFiledTypeExample", TextFiledTypeExample()),
           getItem(
               "sliverList分组 滚动吸顶单个",
